@@ -1,7 +1,7 @@
 {
   "name": "inventory-management-system-backend",
   "version": "1.0.0",
-  "description": "This is inventory management system backend make by express mongoose",
+  "description": "This is inventory management system backend made by express mongoose",
   "main": "src/server.ts",
   "scripts": {
     "start": "node dist/server.js",
