@@ -5,20 +5,12 @@ export type IUser = {
   _id: Types.ObjectId;
   password: string;
   role:
-    | 'super_admin'
     | 'admin'
-    | 'director_admin'
+    | 'super_admin'
     | 'account_admin'
-    | 'rent_collector'
-    | 'doctor'
-    | 'nurse'
-    | 'report_processor'
-    | 'technologist'
-    | 'pharmacist'
-    | 'pharmacy_incharge'
-    | 'general_user'
-    | 'receptionist'
-    | 'lis';
+    | 'salesman'
+    | 'store_incharge'
+    | 'general_user';
   permission: Types.ObjectId[];
   name: string;
   phoneNumber: string;
@@ -38,13 +30,7 @@ export type UserModel = {
   ): Promise<
     Pick<
       IUser,
-      | '_id'
-      | 'name'
-      | 'email'
-      | 'password'
-      | 'role'
-      | 'status'
-      | 'permission'
+      '_id' | 'name' | 'email' | 'password' | 'role' | 'status' | 'permission'
     >
   >;
   isPasswordMatched(
