@@ -9,18 +9,18 @@ const router = express.Router();
 
 router.post(
   '/create-stock',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   validateRequest(StockValidation.createStockZodSchema),
   StockController.createStock,
 );
 
 router.patch(
   '/update-alert-quantity/:id',
-  auth(    
+  auth(
     ENUM_USER_ROLE.SUPER_ADMIN,
     ENUM_USER_ROLE.ADMIN,
     ENUM_USER_ROLE.ACCOUNT_ADMIN,
-    ENUM_USER_ROLE.STORE_INCHARGE
+    ENUM_USER_ROLE.STORE_INCHARGE,
   ),
   validateRequest(StockValidation.updateAlertQuantity),
   StockController.updateAlertQuantity,
@@ -41,7 +41,7 @@ router.get(
 
 router.patch(
   '/:id',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN),
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   validateRequest(StockValidation.updateStockZodSchema),
   StockController.updateStock,
 );

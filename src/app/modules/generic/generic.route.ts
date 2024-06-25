@@ -12,7 +12,6 @@ router.post(
   auth(
     ENUM_USER_ROLE.SUPER_ADMIN,
     ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.ACCOUNT_ADMIN,
     ENUM_USER_ROLE.STORE_INCHARGE,
   ),
   validateRequest(GenericValidation.createGenericZodSchema),
@@ -37,7 +36,6 @@ router.patch(
   auth(
     ENUM_USER_ROLE.SUPER_ADMIN,
     ENUM_USER_ROLE.ADMIN,
-    ENUM_USER_ROLE.ACCOUNT_ADMIN,
     ENUM_USER_ROLE.STORE_INCHARGE,
   ),
   validateRequest(GenericValidation.updateGenericZodSchema),
