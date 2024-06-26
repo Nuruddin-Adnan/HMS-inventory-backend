@@ -12,14 +12,14 @@ import { Product } from '../product/product.model';
 const ObjectId = mongoose.Types.ObjectId;
 
 const createStock = async (payload: IStock): Promise<IStock> => {
-  const product = await Product.findOne({_id: payload.product})
+  const product = await Product.findOne({ _id: payload.product });
 
-  if(!product){
+  if (!product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
   }
 
   payload.productName = product.name;
-  
+
   const result = (await Stock.create(payload)).toObject();
   return result;
 };
@@ -30,7 +30,7 @@ const getAllStocks = async (
 ): Promise<IGenericResponse<IStock[]>> => {
   const conditions = searcher(filters, stockSearchableFields);
 
-  const { limit = 0, skip, fields, sort } = queries;
+  const { limit = 0, skip, fields, sort, nestedFilter } = queries;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialPipeline: any[] = [
@@ -41,7 +41,10 @@ const getAllStocks = async (
         foreignField: '_id',
         as: 'product',
       },
-    }
+    },
+    {
+      $unwind: '$product',
+    },
   ];
 
   const pipeline = generatePipeline(
@@ -51,6 +54,7 @@ const getAllStocks = async (
     fields,
     sort,
     limit,
+    nestedFilter,
   );
 
   const aggregationPipeline: Aggregate<IStock[]> = Stock.aggregate(pipeline);
