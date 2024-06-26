@@ -7,8 +7,8 @@ const ProductSchema = new Schema<IProduct, ProductModel>(
     code: { type: String, unique: true, required: true },
     name: { type: String, trim: true, required: true, unique: true },
     category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
-    brand: { type: String, trim: true, required: true },
     genericName: { type: String, trim: true },
+    brand: { type: String, trim: true, required: true },
     shelve: { type: Schema.Types.ObjectId, ref: 'Shelve' },
     description: { type: String, trim: true },
     unit: { type: String, trim: true, required: true },
@@ -40,5 +40,9 @@ const ProductSchema = new Schema<IProduct, ProductModel>(
     },
   },
 );
+
+// Ensure `unique` fields are indexed
+ProductSchema.index({ code: 1 }, { unique: true });
+ProductSchema.index({ name: 1 }, { unique: true });
 
 export const Product = model<IProduct, ProductModel>('Product', ProductSchema);

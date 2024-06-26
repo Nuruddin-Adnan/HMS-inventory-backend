@@ -45,6 +45,21 @@ const getAllProducts = async (
         as: 'category',
       },
     },
+    {
+      $lookup: {
+        from: 'shelves',
+        localField: 'shelve',
+        foreignField: '_id',
+        pipeline: [
+          {
+            $project: {
+              name: 1,
+            },
+          },
+        ],
+        as: 'shelve',
+      },
+    },
   ];
 
   const pipeline = generatePipeline(
@@ -84,7 +99,7 @@ const getSingleProduct = async (id: string): Promise<IProduct | null> => {
 
   const result = await Product.aggregate([
     {
-      $match: { _id: new ObjectId(id) }
+      $match: { _id: new ObjectId(id) },
     },
     {
       $lookup: {

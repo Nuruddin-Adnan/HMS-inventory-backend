@@ -7,6 +7,8 @@ import { ISupplier } from './supplier.interface';
 import { Supplier } from './supplier.model';
 import { supplierSearchableFields } from './supplier.constant';
 import { generateSUPID } from '../../../helpers/genereteID';
+import generatePipeline from '../../../shared/generatePipeline';
+import { Aggregate } from 'mongoose';
 
 const createSupplier = async (payload: ISupplier): Promise<ISupplier> => {
   // Supplier id generate
@@ -24,26 +26,49 @@ const getAllSuppliers = async (
 
   const { limit = 0, skip, fields, sort } = queries;
 
-  const resultQuery = Supplier.find(conditions)
-    .populate('brand', 'name')
-    .skip(skip as number)
-    .select(fields as string)
-    .sort(sort)
-    .limit(limit as number)
-    .lean();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialPipeline: any[] = [
+    {
+      $lookup: {
+        from: 'brands',
+        localField: 'brand',
+        foreignField: '_id',
+        as: 'brand',
+        pipeline: [
+          {
+            $project: {
+              name: 1,
+            },
+          },
+        ],
+      },
+    },
+  ];
+
+  const pipeline = generatePipeline(
+    initialPipeline,
+    conditions,
+    skip,
+    fields,
+    sort,
+    limit,
+  );
+
+  const aggregationPipeline: Aggregate<ISupplier[]> =
+    Supplier.aggregate(pipeline);
 
   const [result, total] = await Promise.all([
-    resultQuery.exec(),
-    Supplier.countDocuments(conditions),
+    aggregationPipeline.exec(),
+    Supplier.aggregate([{ $match: conditions }, { $count: 'total' }]),
   ]);
 
-  const page = Math.ceil(total / limit);
+  const page = Math.ceil(total[0]?.total / limit);
 
   return {
     meta: {
       page,
       limit,
-      total,
+      total: total[0]?.total,
     },
     data: result,
   };

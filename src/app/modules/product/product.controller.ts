@@ -12,16 +12,16 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
   payload.createdBy = req.user?._id;
 
-  const {price, discountAmount, discountPercent} = payload
+  const { price, discountAmount, discountPercent } = payload;
 
   if (discountAmount > 0 && price > 0) {
     payload.discountPercent = (discountAmount / price) * 100;
   } else if (discountPercent > 0 && price > 0) {
     payload.discountAmount = (discountPercent / 100) * price;
-  }  
+  }
 
-  if(price < payload.discountAmount){
-    throw new Error('Discount can not be larger than price')
+  if (price < payload.discountAmount) {
+    throw new Error('Discount can not be larger than price');
   }
 
   const result = await ProductService.createProduct(payload);
@@ -66,10 +66,22 @@ const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
 
 const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { createdBy, ...updatedData } = req.body;
-  updatedData.updatedBy = req.user?._id;
+  const { createdBy, ...payload } = req.body;
+  payload.updatedBy = req.user?._id;
 
-  const result = await ProductService.updateProduct(id, updatedData);
+  const { price, discountAmount, discountPercent } = payload;
+
+  if (discountAmount > 0 && price > 0) {
+    payload.discountPercent = (discountAmount / price) * 100;
+  } else if (discountPercent > 0 && price > 0) {
+    payload.discountAmount = (discountPercent / 100) * price;
+  }
+
+  if (price < payload.discountAmount) {
+    throw new Error('Discount can not be larger than price');
+  }
+
+  const result = await ProductService.updateProduct(id, payload);
 
   sendResponse<IProduct>(res, {
     statusCode: httpStatus.OK,

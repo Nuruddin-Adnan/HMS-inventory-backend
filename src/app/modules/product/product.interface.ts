@@ -8,8 +8,8 @@ export type IProduct = {
   code: string; //Product code auto generated
   name: string;
   category: Types.ObjectId | ICategory;
-  brand: string;
   genericName: string;
+  brand: string;
   shelve: Types.ObjectId | IShelve | null;
   description: string;
   unit: string;
