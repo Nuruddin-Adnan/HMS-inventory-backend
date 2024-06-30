@@ -9,6 +9,7 @@ export type IStock = {
   quantity: number;
   alertQuantity: number;
   totalSell: number;
+  status: 'active' | 'deactive';
   createdBy: Types.ObjectId | IUser;
   updatedBy: Types.ObjectId | IUser | null;
 };

@@ -6,15 +6,15 @@ import searcher from '../../../shared/searcher';
 import { IProduct } from './product.interface';
 import { Product } from './product.model';
 import { productSearchableFields } from './product.constant';
-import { generateProductCode } from '../../../helpers/genereteID';
+import { generateProductTag } from '../../../helpers/genereteID';
 import generatePipeline from '../../../shared/generatePipeline';
 import { Aggregate } from 'mongoose';
 import { Stock } from '../stock/stock.model';
 import { ObjectId } from 'mongodb';
 
 const createProduct = async (payload: IProduct): Promise<IProduct> => {
-  // Product code generate
-  payload.code = (await generateProductCode()) as string;
+  // Product tag generate
+  payload.tag = (await generateProductTag()) as string;
 
   const result = (await Product.create(payload)).toObject();
   return result;
@@ -43,21 +43,6 @@ const getAllProducts = async (
           },
         ],
         as: 'category',
-      },
-    },
-    {
-      $lookup: {
-        from: 'shelves',
-        localField: 'shelve',
-        foreignField: '_id',
-        pipeline: [
-          {
-            $project: {
-              name: 1,
-            },
-          },
-        ],
-        as: 'shelve',
       },
     },
   ];
@@ -114,21 +99,6 @@ const getSingleProduct = async (id: string): Promise<IProduct | null> => {
           },
         ],
         as: 'category',
-      },
-    },
-    {
-      $lookup: {
-        from: 'shelves',
-        localField: 'shelve',
-        foreignField: '_id',
-        pipeline: [
-          {
-            $project: {
-              name: 1,
-            },
-          },
-        ],
-        as: 'shelve',
       },
     },
     {
@@ -196,7 +166,9 @@ const updateProduct = async (
 
     if (stock) {
       // eslint-disable-next-line no-unused-expressions
-      (stock.productName = result.name), await stock.save();
+      stock.productName = result.name
+      stock.status = result.status
+      await stock.save();
     }
   }
 

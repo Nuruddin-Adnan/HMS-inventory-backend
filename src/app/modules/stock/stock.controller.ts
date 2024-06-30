@@ -67,22 +67,23 @@ const updateStock = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateAlertQuantity = catchAsync(async (req: Request, res: Response) => {
+const updatePartialStock = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { alertQuantity, ...others } = req.body;
+  const { alertQuantity, status, ...others } = req.body;
 
   // update with new alert quantity
   const updatedData = {
     updatedBy : req.user?._id,
-    alertQuantity: alertQuantity
+    alertQuantity: alertQuantity,
+    status: status
   }
 
-  const result = await StockService.updateAlertQuantity(id, updatedData);
+  const result = await StockService.updatePartialStock(id, updatedData);
 
   sendResponse<IStock>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Stock alert quantity updated successfully!',
+    message: 'Stock updated successfully!',
     data: result,
   });
 });
@@ -103,6 +104,6 @@ export const StockController = {
   getAllStocks,
   getSingleStock,
   updateStock,
-  updateAlertQuantity,
+  updatePartialStock,
   deleteStock,
 };

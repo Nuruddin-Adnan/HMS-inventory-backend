@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import mongoose from 'mongoose';
+import { status } from './stock.constant';
 
 const createStockZodSchema = z.object({
   body: z.object({
@@ -38,14 +39,15 @@ const updateStockZodSchema = z.object({
   }),
 });
 
-const updateAlertQuantity = z.object({
+const updatePartialZodSchema = z.object({
   body: z.object({
     alertQuantity: z.number({required_error: 'Please provide a valid alert quantity'}).min(1),
+    status: z.enum([...status] as [string, ...string[]]).optional(),
   }),
 });
 
 export const StockValidation = {
   createStockZodSchema,
   updateStockZodSchema,
-  updateAlertQuantity
+  updatePartialZodSchema
 };

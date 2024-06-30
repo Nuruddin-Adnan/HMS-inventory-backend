@@ -6,6 +6,7 @@ import searcher from '../../../shared/searcher';
 import { IShelve } from './shelve.interface';
 import { shelveSearchableFields } from './shelve.constant';
 import { Shelve } from './shelve.model';
+import { Product } from '../product/product.model';
 
 const createShelve = async (payload: IShelve): Promise<IShelve> => {
   const result = await Shelve.create(payload);
@@ -76,6 +77,17 @@ const updateShelve = async (
   const result = await Shelve.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   });
+
+    // update product generic name
+    if (result) {
+      await Product.updateMany(
+        { shelve: targetedData?.name },
+        { shelve: result.name },
+        {
+          new: true,
+        },
+      );
+    }
 
   return result;
 };

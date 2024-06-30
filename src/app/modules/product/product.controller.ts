@@ -66,7 +66,7 @@ const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
 
 const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { createdBy, ...payload } = req.body;
+  const { createdBy, tag, ...payload } = req.body;
   payload.updatedBy = req.user?._id;
 
   const { price, discountAmount, discountPercent } = payload;

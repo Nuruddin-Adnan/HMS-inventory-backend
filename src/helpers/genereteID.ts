@@ -61,30 +61,30 @@ export const generateCUSID = async () => {
   return CUSID;
 };
 
-// Custom function to generate the product code
-export const generateProductCode = async () => {
+// Custom function to generate the product tag
+export const generateProductTag = async () => {
   const currentYear: number = new Date().getFullYear();
 
   // Set the time  for both startDate and endDate
   const startDate: Date = new Date(currentYear, 0, 1, 0, 0, 0, 0);
   const endDate: Date = new Date(currentYear, 11, 31, 23, 59, 59, 999);
 
-  let code;
+  let tag;
 
   const lastCollection: IProduct[] | null = await Product.find({
     createdAt: { $gte: startDate, $lte: endDate },
   })
-    .sort({ code: -1 })
+    .sort({ tag: -1 })
     .limit(1)
     .exec();
 
   if (lastCollection.length > 0) {
-    code = parseInt(lastCollection[0].code) + 1;
+    tag = parseInt(lastCollection[0].tag) + 1;
   } else {
-    code = `${new Date().getFullYear().toString().substring(2)}000001`;
+    tag = `${new Date().getFullYear().toString().substring(2)}000001`;
   }
 
-  return code;
+  return tag;
 };
 
 // Custom function to generate the purchase id

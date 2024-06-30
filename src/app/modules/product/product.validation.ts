@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 const createProductZodSchema = z.object({
   body: z
     .object({
+      code: z.string().trim().optional(),
       name: z
         .string({
           required_error: 'Product name is required',
@@ -21,17 +22,7 @@ const createProductZodSchema = z.object({
       ),
       brand: z.string().trim().min(1),
       genericName: z.string().trim().optional(),
-      shelve: z
-        .string()
-        .refine(
-          value => {
-            return mongoose.Types.ObjectId.isValid(value);
-          },
-          {
-            message: 'Invalid shelve id',
-          },
-        )
-        .optional(),
+      shelve: z.string().trim().optional(),
       description: z.string().optional(),
       unit: z
         .string({
@@ -78,6 +69,7 @@ const createProductZodSchema = z.object({
 
 const updateProductZodSchema = z.object({
   body: z.object({
+    code: z.string().trim().optional(),
     name: z
       .string({
         required_error: 'Product name is required',
@@ -98,17 +90,7 @@ const updateProductZodSchema = z.object({
       .optional(),
     brand: z.string().trim().min(1).optional(),
     genericName: z.string().trim().optional(),
-    shelve: z
-      .string()
-      .refine(
-        value => {
-          return mongoose.Types.ObjectId.isValid(value);
-        },
-        {
-          message: 'Invalid shelve id',
-        },
-      )
-      .optional(),
+    shelve: z.string().trim().optional(),
     description: z.string().optional(),
     unit: z.string().trim().min(1).optional(),
     price: z

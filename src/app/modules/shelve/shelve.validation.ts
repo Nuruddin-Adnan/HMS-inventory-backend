@@ -7,7 +7,6 @@ const createShelveZodSchema = z.object({
       required_error: 'Shelve name is required',
     }),
     description: z.string().optional(),
-    status: z.enum([...status] as [string, ...string[]]).optional(),
   }),
 });
 

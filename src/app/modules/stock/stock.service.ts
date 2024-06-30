@@ -42,9 +42,6 @@ const getAllStocks = async (
         as: 'product',
       },
     },
-    {
-      $unwind: '$product',
-    },
   ];
 
   const pipeline = generatePipeline(
@@ -155,7 +152,7 @@ const updateStock = async (
   return result;
 };
 
-const updateAlertQuantity = async (
+const updatePartialStock = async (
   id: string,
   payload: Partial<IStock>,
 ): Promise<IStock | null> => {
@@ -192,6 +189,6 @@ export const StockService = {
   getAllStocks,
   getSingleStock,
   updateStock,
-  updateAlertQuantity,
+  updatePartialStock,
   deleteStock,
 };

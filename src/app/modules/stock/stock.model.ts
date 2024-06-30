@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IStock, StockModel } from './stock.interface';
+import { status } from './stock.constant';
 
 const StockSchema = new Schema<IStock, StockModel>(
   {
@@ -13,6 +14,14 @@ const StockSchema = new Schema<IStock, StockModel>(
     quantity: { type: Number, required: true },
     alertQuantity: { type: Number, default: 10 },
     totalSell: { type: Number, default: 0 },
+    status: {
+      type: String,
+      default: 'active',
+      enum: {
+        values: status,
+        message: 'Status can not be `{VALUE}`',
+      },
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',

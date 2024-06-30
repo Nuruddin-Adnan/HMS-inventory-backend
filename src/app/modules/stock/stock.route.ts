@@ -15,15 +15,15 @@ router.post(
 );
 
 router.patch(
-  '/update-alert-quantity/:id',
+  '/update-partial/:id',
   auth(
     ENUM_USER_ROLE.SUPER_ADMIN,
     ENUM_USER_ROLE.ADMIN,
     ENUM_USER_ROLE.ACCOUNT_ADMIN,
     ENUM_USER_ROLE.STORE_INCHARGE,
   ),
-  validateRequest(StockValidation.updateAlertQuantity),
-  StockController.updateAlertQuantity,
+  validateRequest(StockValidation.updatePartialZodSchema),
+  StockController.updatePartialStock,
 );
 
 router.get(
