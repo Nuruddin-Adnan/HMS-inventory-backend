@@ -55,8 +55,6 @@ router.get(
     ENUM_USER_ROLE.ADMIN,
     ENUM_USER_ROLE.ACCOUNT_ADMIN,
     ENUM_USER_ROLE.STORE_INCHARGE,
-    ENUM_USER_ROLE.SALESMAN,
-    ENUM_USER_ROLE.GENERAL_USER,
   ),
   ExpenseController.getAllExpenses,
 );

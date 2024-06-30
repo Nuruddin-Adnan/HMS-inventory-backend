@@ -21,13 +21,15 @@ export default function generatePipeline(
       'updatedBy',
       'supplier',
       'product',
-      'brand',
       'category',
       'group',
-      'shelve',
     ]; // Suffixes for ObjectId
-    const dateSuffixes = ['createdAt', 'updatedAt', 'expenseDate', 'expiryDate']; // Suffixes for Date
-
+    const dateSuffixes = [
+      'createdAt',
+      'updatedAt',
+      'expenseDate',
+      'expiryDate',
+    ]; // Suffixes for Date
 
     if (conditions.$and && conditions.$and[0]?.$and) {
       let filterData = conditions.$and[0]?.$and;
@@ -84,12 +86,11 @@ export default function generatePipeline(
       conditions.$and[0].$and = filterData;
     }
 
-    if(nestedFilter === 'true'){
+    if (nestedFilter === 'true') {
       pipeline.push({ $match: conditions });
-    }else {
+    } else {
       pipeline.unshift({ $match: conditions });
     }
-    
   }
 
   if (sort) {
