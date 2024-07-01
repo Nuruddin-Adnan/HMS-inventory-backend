@@ -9,6 +9,7 @@ export type IPurchase = {
   supplier: Types.ObjectId | ISupplier;
   product: Types.ObjectId | IProduct;
   productName: string;
+  invoiceNo: string;
   lotNo: string;
   expiryDate: Date;
   unit: string;

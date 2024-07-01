@@ -1,4 +1,4 @@
-export const purchaseSearchableFields = ['productName'];
+export const purchaseSearchableFields = ['productName', 'lotNo'];
 export const paymentStatus = [
   'paid',
   'unpaid',

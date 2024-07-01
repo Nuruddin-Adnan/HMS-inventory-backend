@@ -4,6 +4,17 @@ const searcher = (filters: IFilters, arrayOfSearchFields: string[]) => {
   const { search, ...filtersData } = filters;
   const andConditions = [];
 
+  if (Object.keys(filtersData).length) {
+    andConditions.push({
+      $and: Object.entries(filtersData).map(([field, value]) => {
+        return {
+          [field]: value,
+        };
+      }),
+    });
+  }
+
+  // the search should be push last
   if (search) {
     andConditions.push({
       $or: arrayOfSearchFields.map((field: string) => ({
@@ -12,16 +23,6 @@ const searcher = (filters: IFilters, arrayOfSearchFields: string[]) => {
           $options: 'i',
         },
       })),
-    });
-  }
-
-  if (Object.keys(filtersData).length) {
-    andConditions.push({
-      $and: Object.entries(filtersData).map(([field, value]) => {
-        return {
-          [field]: value,
-        };
-      }),
     });
   }
 

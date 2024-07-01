@@ -92,7 +92,7 @@ const getSinglePurchase = catchAsync(async (req: Request, res: Response) => {
 
 const updatePurchase = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { createdBy, SUPID, ...updatedData } = req.body;
+  const { createdBy,  ...updatedData } = req.body;
   updatedData.updatedBy = req.user?._id;
 
   const result = await PurchaseService.updatePurchase(id, updatedData);

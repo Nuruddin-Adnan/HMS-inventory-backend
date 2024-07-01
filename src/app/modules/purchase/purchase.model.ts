@@ -16,6 +16,7 @@ const PurchaseSchema = new Schema<IPurchase, PurchaseModel>(
       required: true,
     },
     productName: { type: String, trim: true, required: true },
+    invoiceNo: { type: String, trim: true },
     lotNo: { type: String, trim: true },
     expiryDate: { type: Date, required: true },
     unit: { type: String, trim: true, required: true },

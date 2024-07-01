@@ -166,8 +166,8 @@ const updateProduct = async (
 
     if (stock) {
       // eslint-disable-next-line no-unused-expressions
-      stock.productName = result.name
-      stock.status = result.status
+      stock.productName = result.name;
+      stock.status = result.status;
       await stock.save();
     }
   }

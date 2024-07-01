@@ -100,7 +100,8 @@ const getAllPurchases = async (
 ): Promise<IGenericResponse<IPurchase[]>> => {
   const conditions = searcher(filters, purchaseSearchableFields);
 
-  const { limit = 0, skip, fields, sort } = queries;
+  const { limit = 0, skip, fields, sort, nestedFilter } = queries;
+  
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialPipeline: any[] = [
@@ -117,10 +118,19 @@ const getAllPurchases = async (
         from: 'suppliers',
         localField: 'supplier',
         foreignField: '_id',
+        pipeline: [
+          {
+            $project: {
+              name: 1,
+              contactNo: 1
+            },
+          },
+        ],
         as: 'supplier',
       },
     },
   ];
+
 
   const pipeline = generatePipeline(
     initialPipeline,
@@ -129,6 +139,7 @@ const getAllPurchases = async (
     fields,
     sort,
     limit,
+    nestedFilter,
   );
 
   const aggregationPipeline: Aggregate<IPurchase[]> =
